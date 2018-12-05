@@ -1,5 +1,5 @@
 ## 张琪的个人空间，可能包含以下各类文档
 
-- [牢骚](zhangqiqi.github.io/complain/README.md)
+- [牢骚](./test.md)
 - 技术分享
 - 经验总结
