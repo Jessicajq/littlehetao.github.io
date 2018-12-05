@@ -1,4 +1,4 @@
 ## 这个页面是什么鬼，为什么出错
 
-- [github pages对新手太不友好了](zhangqiqi.github.io/complain/github pages对新手太不友好了.md)
+- [github pages对新手太不友好了](github pages对新手太不友好了.md)
 - 搞个路径跳转问题太多了
