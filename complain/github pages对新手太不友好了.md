@@ -51,3 +51,17 @@ _cofnig.yml里就就一句代码
 
 - 有前端经验的可以使用README.md提供的方式来自由的配置
 - 像我一样没有经验的，只需要熟悉下markdown的基本语法，只通过markdown来创建blog
+
+### 一些基本操作
+- 创建新文档  
+直接使用github的create new file创建.md后缀的文档即可  
+
+- 创建新路径：创建新路径，可以通过create new file创建  
+`新路径名/README.md`， 即，需要创建一个test路径，通过创建一个   `test/README.md`  
+实现，需要注意，路径名不能为中文，`README.md`文件内可以编写本路径各个文档的链接
+
+- 链接其他文件
+直接使用markdown的超链接语法即可，如果需要链接其他路径的文档，可以使用相对路径和绝对路径  
+相对路径可以使用 `.` 或者 `..`进行路径切换
+绝对路径需要加上 `xxx.github.io/`, 即你的blog的repository name
+
