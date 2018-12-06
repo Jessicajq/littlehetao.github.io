@@ -24,7 +24,7 @@
 
 ### 设置repository
 ---
-进入新建的repository，选择settings
+进入新建的repository，选择settings  
 在settings栏下拉，可以看到有个github pages的配置
 在上一步设置repository name时，如果命名格式是正确的，这里应该会有显示一句 
 
