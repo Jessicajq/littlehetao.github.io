@@ -1,1 +1,1 @@
-- [mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz安装](./mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz安装)
+- [mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz安装](./mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz安装.md)
