@@ -1,4 +1,2 @@
 - [mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz安装](./mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz安装.md)
 - [mysql主从同步配置](./mysql主从同步配置.md)
-- [qtcreator编译googletest](./qtcreator编译googletest.md)
-- [qt配置聚焦或进行控件输入限制等功能时的限制](./配置qt控件的聚焦和输入限制.md)
