@@ -1,6 +1,6 @@
 ## 常用sql  2021/06/17 12:07:30 
 ---
-### 批量查数据
+### 1.批量查数据
 SELECT
 DISTINCT 
 CONCAT('select *  from ',c.table_name,' where ',c.column_name,' = ',"'ding6efb102c50979493';"),
@@ -11,7 +11,7 @@ WHERE
   c.table_schema = 'dj_standard_dev'
 and c.column_name in ('fgsid','firstid','FILIALEID','corp_id','corpid','buy_corpId')
  AND c.table_name not in  ('jc_login_ding','jc_login_emp');
-#### 批量删除数据
+#### 1.1批量删除数据
 SELECT
 CONCAT('delete  from ',c.table_name ,';'),
 c.table_name
@@ -19,11 +19,11 @@ FROM
   information_schema. `TABLES` c
 WHERE
   c.table_schema = 'bigdata-web' and c.table_name like 't_ab_%'
-### 数据库容量查询（库名需替换）
+### 2.数据库容量查询（库名需替换）
 select table_schema as '数据库',sum(table_rows) as '记录数', sum(truncate(data_length/1024/1024, 2)) as '数据容量(MB)', 
 sum(truncate(index_length/1024/1024, 2)) as '索引容量(MB)' from information_schema.tables where table_schema='dj_standard_dev' ; 
 
-### 数据库各个表使用情况（库名需替换）
+### 3.数据库各个表使用情况（库名需替换）
 select 
 table_name, 
 concat(truncate(data_length/1024/1024,2),' MB') as data_size,
@@ -34,18 +34,18 @@ from information_schema.tables
 where table_schema = 'dj_standard_dev'
 order by data_length desc;
 
-### 数据库表和各表记录数（库名需替换）
+### 4.数据库表和各表记录数（库名需替换）
 use information_schema;
 select table_name,table_rows from tables where TABLE_SCHEMA = 'dj_standard_dev' order by table_name desc; 
 
-### 查询哪些表包含某一字段
+### 5.查询哪些表包含某一字段
 
 select TABLE_NAME
 from information_schema.`COLUMNS` 
 where TABLE_SCHEMA='dj_standard_dev'
 and COLUMN_NAME='issign'
 
-### 多表拼接字段查询
+### 6.多表拼接字段查询
 SELECT
   *
 FROM
@@ -93,7 +93,7 @@ FROM
   ) c
 LIMIT 0
 
-### case报表统计sql
+### 7.case报表统计sql
 SELECT ages, count(*) AS agesnum  
                 FROM  
                  (SELECT  
