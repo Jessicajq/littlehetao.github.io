@@ -15,12 +15,19 @@
 猜测是不是linux下设置语言环境的原因，于是百度，配置了下，还是未解决jmeter日志中文显示问号
 ![img5.png](linux执行jmeter截图/img5.png)
 
+
+
+
+
+
+
 ## update  2021-06-29 12:12
-由于上次linux语言环境未设置成功，今天又改变了下思路，重新整理问题。
+由于上面linux语言环境未设置成功，今天又改变了下思路，重新整理问题。
 1.用平台生成好的脚本，放到jmeter里面执行，看运行结果，发现加上
-<stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+“ <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp> ”就能运行成功。
 ![img6.png](linux执行jmeter截图/img6.png)
-就能执行成功。
-2.于是在代码里找关于生成脚本的地方，都加上了该指定编码的脚本
+
+2.于是在代码里找关于生成脚本的地方，都加上了该指定编码的脚本。
 ![img7.png](linux执行jmeter截图/img7.png)
 3.再次调用接口运行，运行成功。
+![img8.png](linux执行jmeter截图/img8.png)
