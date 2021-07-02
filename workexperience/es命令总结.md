@@ -1,0 +1,15 @@
+## es查询总结  2021/07/02 16:07:30 
+---
+### 1.查数据
+如要查安全事件的数据
+![img.png](es操作截图/img.png)
+### 2.新增数据
+POST ailpha-saas-securityevent-000001/_doc/bcbc801141d84a03ab1ec4697e366781
+{内容
+}
+![img_4.png](es操作截图/img_4.png)
+![img_1.png](es操作截图/img_1.png)
+替换edId未目前不存在的 执行
+![img_2.png](es操作截图/img_2.png)
+### 3.更新数据
+![img_3.png](es操作截图/img_3.png)
