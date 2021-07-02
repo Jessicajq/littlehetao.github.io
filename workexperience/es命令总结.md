@@ -14,7 +14,7 @@ GET ailpha-saas-securityevent*/_search
  }
 }
 ![img.png](es操作截图/img.png)
-### 2.新增数据
+### 2.每次新增一条数据
 POST ailpha-saas-securityevent-000001/_doc/bcbc801141d84a03ab1ec4697e366781
 {内容
 }
