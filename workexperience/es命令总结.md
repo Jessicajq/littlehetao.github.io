@@ -2,6 +2,17 @@
 ---
 ### 1.查数据
 如要查安全事件的数据
+GET ailpha-saas-securityevent-000001/_search
+GET ailpha-saas-securityevent*/_search
+{
+ "query": {
+   "wildcard": {
+     "esId": {
+       "value": "bcbc801141d84a03ab1ec4697e36678f"
+     }
+   }
+ }
+}
 ![img.png](es操作截图/img.png)
 ### 2.新增数据
 POST ailpha-saas-securityevent-000001/_doc/bcbc801141d84a03ab1ec4697e366781
@@ -12,4 +23,5 @@ POST ailpha-saas-securityevent-000001/_doc/bcbc801141d84a03ab1ec4697e366781
 替换edId未目前不存在的 执行
 ![img_2.png](es操作截图/img_2.png)
 ### 3.更新数据
+POST ailpha-saas-securityevent-000001/_doc/bcbc801141d84a03ab1ec4697e366781（POST换成PUT也行）
 ![img_3.png](es操作截图/img_3.png)
