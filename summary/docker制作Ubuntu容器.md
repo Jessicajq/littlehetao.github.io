@@ -106,7 +106,7 @@ virtualenv venv
 #### 7.容器内部获取信息,命令： docker inspect 容器id或者容器（如product_api）
 
 
-启动iat容器# docker run -p 10026:22 -p 10085:80 -p 10056:5000 7e681a838153
+#### 8.进入容器后，创建flask工程项目的虚拟目录。
 apt-get update
 
 apt-get install sudo
@@ -116,3 +116,5 @@ sudo apt-get install python-setuptools
 sudo pip install virtualenv
 virtualenv venv
 . venv/bin/activate
+
+#### 9.以上内容linux下的相关软件压缩包。（由于上传不到该网页，可以私下找我要）
