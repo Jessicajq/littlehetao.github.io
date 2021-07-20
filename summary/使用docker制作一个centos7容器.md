@@ -74,6 +74,8 @@ home/iatapi/
 /usr/bin/python /usr/local/python37/bin/gunicorn -w4 -b0.0.0.0:5000 run:app
 后台一直挂起
 /usr/bin/python /usr/local/python37/bin/gunicorn -w4 -b0.0.0.0:5000 run:app    &
+
+/usr/bin/python /usr/local/bin/gunicorn -D --error-logfile=/logs/gunicorn.log --pid=/logs/gunicorn.pid --access-logfile=/logs/access.log -w 3 -t 300 -b 0.0.0.0:5000 run:app
 查看gunicorn的所有进程（ps -aux）
 
 #### 5.建立jmeter软连接
@@ -82,3 +84,28 @@ ln -s /usr/jmeter/apache-jmeter-5.4.1/bin/jmeter-server /usr/bin/jmeter-server
 
 #### 6.为什么每次进入命令都要重新source /etc/profile 才能生效。①~/.bashrc里面加一句source /etc/profile 然后执行一次 source ~/.bashrc 使该文件生效即可。
 ![img_10.png](images/img_10.png)
+
+
+
+####### 7.nginx配置
+root /pages;
+
+	# Add index.php to the list if you are using PHP
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ =404;
+	}
+
+	location /api/ {
+		proxy_pass http://127.0.0.1:5000;
+		proxy_set_header Host $host:$server_port;
+	}
+              location /socket.io/ {
+		proxy_pass http://127.0.0.1:5000;
+		proxy_set_header Host $host:$server_port;
+	}
