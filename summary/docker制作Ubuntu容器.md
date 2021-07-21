@@ -3,8 +3,10 @@
 [一、拉取Ubuntu镜像](#pull)
 
 [二、安装各种工具包](#install)
+
 [2.1 安装ssh](#install1)
 [2.2 安装必备工具：jdk,node,jmeter，nginx，gunicorn](#install2)
+
 [三、部署程序和启动](#run)
 
 ---
