@@ -6,7 +6,7 @@
 
 ---
 ###### 参考连接https://www.runoob.com/docker/docker-install-ubuntu.html
-#### 1.拉取最新版的 Ubuntu 镜像 <div id="pull"></div>
+<a id="pull">#### 1.拉取最新版的 Ubuntu 镜像 </a>
 ![img_1.png](images/docker的Ubuntu截图/img_1.png)
 
 #### 2.创建并启动容器
@@ -19,7 +19,7 @@ docker exec -it product_api_sj bash
 
 ![img_3.png](images/docker的Ubuntu截图/img_3.png)
 
-#### 4.安装各种工具包 <div id="install"></div>
+<a id="install">#### 4.安装各种工具包 </a>
 ##### 4.1 安装ssh，参考文档https://www.cnblogs.com/mengw/p/11413461.html;
 ①执行更新： apt-get update
 ![img_4.png](images/docker的Ubuntu截图/img_4.png)
@@ -103,13 +103,13 @@ virtualenv venv
 
 
 
-#### 5.启动程序，运行，访问<div id="run"></div>
+<a id="run">#### 5.启动程序，运行，访问</a>
 ①调试运行，看环境是否搭建好。进入后端的部署路径入口处，如：cd /home/ailpha_api/server，直接运行python run.py 启动整个应用工程。注意运行时报错etrieving data from RDS gives AttributeError: 'sqlalchemy.cimmutabledict.immutabledict' object has no attribute 'setdefault'
 解决方案：pip install --upgrade 'SQLAlchemy<1.4'，安装小于1.4版本的即可。
 ②后端正常访问后，直接打开前端页面，看是否正常访问：http://宿主机ip+宿主机端口。  如果不能访问，说明nginx配置有问题，需再检查下；
 ③前后端都正常后，前端是否正常登录，访问后端接口。
-④后端改变运行方式，后台挂起运行。使用命令：cd /home/ailpha_api/server  #①进入程序入口
-nohup gunicorn -w4 --worker-class=gevent -b0.0.0.0:5000 run:app --reload >gunicorn.log 2>& 1 &   #②后台挂起
+④后端改变运行方式，后台挂起运行。使用命令：#①进入程序入口： cd /home/ailpha_api/server    #②后台挂起：
+nohup gunicorn -w4 --worker-class=gevent -b0.0.0.0:5000 run:app --reload >gunicorn.log 2>& 1 &  
 
 
 
