@@ -1,12 +1,14 @@
 ## docker制作容器  2021/07/16 12:07:30 
 
 [一、拉取Ubuntu镜像](#pull)
+
 [二、安装各种工具包](#install)
+
 [三、部署程序和启动](#run)
 
 ---
 ###### 参考连接https://www.runoob.com/docker/docker-install-ubuntu.html
-<a id="pull">#### 1.拉取最新版的 Ubuntu 镜像 </a>
+#### <a id="pull"> 1.拉取最新版的 Ubuntu 镜像 </a>
 ![img_1.png](images/docker的Ubuntu截图/img_1.png)
 
 #### 2.创建并启动容器
