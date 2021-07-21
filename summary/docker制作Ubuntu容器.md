@@ -3,7 +3,8 @@
 [一、拉取Ubuntu镜像](#pull)
 
 [二、安装各种工具包](#install)
-
+[2.1 安装ssh](#install1)
+[2.2 安装必备工具：jdk,node,jmeter，nginx，gunicorn](#install2)
 [三、部署程序和启动](#run)
 
 ---
@@ -21,8 +22,8 @@ docker exec -it product_api_sj bash
 
 ![img_3.png](images/docker的Ubuntu截图/img_3.png)
 
-<a id="install">#### 4.安装各种工具包 </a>
-##### 4.1 安装ssh，参考文档https://www.cnblogs.com/mengw/p/11413461.html;
+#### <a id="install">4.安装各种工具包 </a>
+##### <a id="install1">4.1 安装ssh，参考文档https://www.cnblogs.com/mengw/p/11413461.html;</a>
 ①执行更新： apt-get update
 ![img_4.png](images/docker的Ubuntu截图/img_4.png)
 ② 安装ssh-client命令：apt-get install openssh-client
@@ -47,7 +48,7 @@ docker exec -it product_api_sj bash
 ##### 4.2.检查是否有python，有就不用安装python：
 ![img_13.png](images/docker的Ubuntu截图/img_13.png)
 
-##### 4.3.已知下载好linux下的jdk,node,jmeter.手动解压安装Jdk，node,jmeter等：
+##### <a id="install2">4.3.已知下载好linux下的jdk,node,jmeter.手动解压安装Jdk，node,jmeter等：</a>
 ①安装jdk，参考https://blog.csdn.net/weixin_38924500/article/details/106215048
 1.创建文件夹，并解压，命令：sudo tar -axvf /tools/jdk-8u11-linux-x64.tar.gz -C /usr/local/jvm/
 
@@ -105,7 +106,7 @@ virtualenv venv
 
 
 
-<a id="run">#### 5.启动程序，运行，访问</a>
+#### <a id="run">5.启动程序，运行，访问</a>
 ①调试运行，看环境是否搭建好。进入后端的部署路径入口处，如：cd /home/ailpha_api/server，直接运行python run.py 启动整个应用工程。注意运行时报错etrieving data from RDS gives AttributeError: 'sqlalchemy.cimmutabledict.immutabledict' object has no attribute 'setdefault'
 解决方案：pip install --upgrade 'SQLAlchemy<1.4'，安装小于1.4版本的即可。
 ②后端正常访问后，直接打开前端页面，看是否正常访问：http://宿主机ip+宿主机端口。  如果不能访问，说明nginx配置有问题，需再检查下；
