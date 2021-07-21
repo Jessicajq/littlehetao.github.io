@@ -1,7 +1,12 @@
 ## docker制作容器  2021/07/16 12:07:30 
+
+[一、拉取Ubuntu镜像](#pull)
+[二、安装各种工具包](#install)
+[三、部署程序和启动](#run)
+
 ---
 ###### 参考连接https://www.runoob.com/docker/docker-install-ubuntu.html
-#### 1.拉取最新版的 Ubuntu 镜像
+#### 1.拉取最新版的 Ubuntu 镜像 <div id="pull"></div>
 ![img_1.png](images/docker的Ubuntu截图/img_1.png)
 
 #### 2.创建并启动容器
@@ -14,7 +19,8 @@ docker exec -it product_api_sj bash
 
 ![img_3.png](images/docker的Ubuntu截图/img_3.png)
 
-#### 4.安装各种工具包,4.1 安装ssh，参考文档https://www.cnblogs.com/mengw/p/11413461.html;
+#### 4.安装各种工具包 <div id="install"></div>
+##### 4.1 安装ssh，参考文档https://www.cnblogs.com/mengw/p/11413461.html;
 ①执行更新： apt-get update
 ![img_4.png](images/docker的Ubuntu截图/img_4.png)
 ② 安装ssh-client命令：apt-get install openssh-client
@@ -71,6 +77,10 @@ sudo apt-get install libssl-dev
 ![img_19.png](images/docker的Ubuntu截图/img_19.png)
 3.启动和检查nginx是否安装成功。
 ![img_20.png](images/docker的Ubuntu截图/img_20.png)
+4.更改nginx配置，使其监听80or443端口后，访问指定的前端路径和后端接口；这里就看个人部署在服务器上的路径（nginx.conf可以找我要）。
+5.再次启动运行nginx。此时发现报错，nginx: [emerg] open() "/var/log/nginx/access.log" failed (2: No such file or directory)
+新建缺少的对应文件夹和文件即可。
+![img_25.png](images/docker的Ubuntu截图/img_25.png)
 
 ##### 4.4.安装gunicorn：
 ①检查没有pip,先安装pip,命令：sudo apt-get install python3-pip
@@ -91,22 +101,23 @@ virtualenv venv
 ，执行了以下依赖包后，重新安装组件。
 ![img_24.png](images/docker的Ubuntu截图/img_24.png)
 
-⑥注意运行时报错etrieving data from RDS gives AttributeError: 'sqlalchemy.cimmutabledict.immutabledict' object has no attribute 'setdefault'
+
+
+#### 5.启动程序，运行，访问<div id="run"></div>
+①调试运行，看环境是否搭建好。进入后端的部署路径入口处，如：cd /home/ailpha_api/server，直接运行python run.py 启动整个应用工程。注意运行时报错etrieving data from RDS gives AttributeError: 'sqlalchemy.cimmutabledict.immutabledict' object has no attribute 'setdefault'
 解决方案：pip install --upgrade 'SQLAlchemy<1.4'，安装小于1.4版本的即可。
+②后端正常访问后，直接打开前端页面，看是否正常访问：http://宿主机ip+宿主机端口。  如果不能访问，说明nginx配置有问题，需再检查下；
+③前后端都正常后，前端是否正常登录，访问后端接口。
+④后端改变运行方式，后台挂起运行。使用命令：cd /home/ailpha_api/server  #①进入程序入口
+nohup gunicorn -w4 --worker-class=gevent -b0.0.0.0:5000 run:app --reload >gunicorn.log 2>& 1 &   #②后台挂起
 
 
 
-#### 5.启动程序，运行，访问
-运行nginx的时候，报错，nginx: [emerg] open() "/var/log/nginx/access.log" failed (2: No such file or directory)
-新建缺少的对应文件夹和文件即可。
-![img_25.png](images/docker的Ubuntu截图/img_25.png)
 
+#### 6.以上过程的其他操作补充
+6.1容器内部获取信息,命令： docker inspect 容器id或者容器名称
 
-
-#### 7.容器内部获取信息,命令： docker inspect 容器id或者容器（如product_api）
-
-
-#### 8.进入容器后，创建flask工程项目的虚拟目录。
+6.2进入容器后，创建flask工程项目的虚拟目录。
 apt-get update
 
 apt-get install sudo
@@ -117,4 +128,4 @@ sudo pip install virtualenv
 virtualenv venv
 . venv/bin/activate
 
-#### 9.以上内容linux下的相关软件压缩包。（由于上传不到该网页，可以私下找我要）
+###### 写到最后：以上内容linux下的相关软件压缩包。（由于上传不到该网页，可以私下找我要）
