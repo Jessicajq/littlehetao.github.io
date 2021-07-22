@@ -26,7 +26,7 @@ pycharm破解包安装,参考地址：https://www.789zhao.com/blog/JC7HPE5ZOT75.
 2.3.5 配置完成后，可以进行上传下载等操作同步代码，如下图：
 ![img_7.png](截图/research development/img_7.png)
 
-2.3.5 配置远程interpreter；
+2.3.6 配置远程interpreter；
 ①在pycharm中，依次点击如下按钮
 file --- > settings --- > Project interpreter，
 ②然后点击右边的齿轮，如下图：
@@ -39,9 +39,10 @@ file --- > settings --- > Project interpreter，
 ⑤显示远程包；
 ![img_11.png](截图/research development/img_11.png)
 
-2.3.6 远程运行，看是否运行正常。至此，远程连接配置完后，可以开始开发；
+#### 2.4 远程运行，看是否运行正常。至此，远程连接配置完后，可以开始开发；
 ![img_12.png](截图/research development/img_12.png)
-更改文件后，记得上传至服务器（建议一开始每个单文件上，点击右键 上传至服务器）
+更改文件后，记得上传至服务器（建议一开始对每个更改后的文件，一个文件一个文件的点击右键上传至服务器，
+不要根目录上点击右键把本地所有文件上传到服务器）
 ![img_13.png](截图/research development/img_13.png)
 
 
