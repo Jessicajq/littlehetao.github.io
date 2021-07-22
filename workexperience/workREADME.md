@@ -5,3 +5,4 @@
 - [es命令总结](es命令总结.md)
 - [gunicorn运行报错](gunicorn运行报错.md)
 - [jupyter notebook使用记录](jupyter notebook.md)
+- [pycharm远程开发](research and development.md)
