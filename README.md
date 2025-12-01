@@ -2,6 +2,7 @@
 
 - [技术分享](./summary/README.md)
 - [工作总结](./workexperience/workREADME.md)
+- [工作总结](./life/README.md)
 
 
 
