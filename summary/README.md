@@ -3,4 +3,5 @@
 - [linux下时间问题](./linux下时间问题.md)
 - [使用docker制作一个centos7容器以及其他](./使用docker制作一个centos7容器.md)
 - [docker制作Ubuntu容器](docker制作Ubuntu容器.md)
+- [2025年度总结](2025年度总结.md)
 
