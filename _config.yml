@@ -1,1 +1,8 @@
 theme: jekyll-theme-cayman
+title: 肖静的个人空间
+description: 技术分享、工作总结和生活记录
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
