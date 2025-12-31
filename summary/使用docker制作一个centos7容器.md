@@ -1,3 +1,8 @@
+---
+layout: default
+title: Docker制作CentOS7容器
+---
+
 ## docker制作容器  2021/06/18 12:07:30 
 ---
 ###### 参考连接https://www.cnblogs.com/zipxzf/articles/14638272.html
@@ -108,4 +113,4 @@ root /pages;
               location /socket.io/ {
 		proxy_pass http://127.0.0.1:5000;
 		proxy_set_header Host $host:$server_port;
-	}
+	}

@@ -1,3 +1,8 @@
+---
+layout: default
+title: MySQL 5.7.21安装
+---
+
 ## mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz安装
 
     filename = mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz
@@ -57,4 +62,4 @@ mysqld执行完成后，在终端最后会生成一个临时密码，用于首�
 
     set password=password('????')
 
-`????`即用户新设的密码
+`????`即用户新设的密码

@@ -1,3 +1,8 @@
+---
+layout: default
+title: MySQL主从同步配置
+---
+
 ## mysql配置主从备份 2018/12/17 15:36:30 
 ---
 mysql主从备份最好是主从机的数据库版本一致，主从不同步的情况会出现什么问题，我也不知道，我也是第一次配置，两个服务器用了同一个安装包安装的  
@@ -105,3 +110,4 @@ show slave status\G
  Slave_IO_Running:Yes
 Slave_SQL_Running:Yes
 ```
+

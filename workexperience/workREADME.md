@@ -1,3 +1,7 @@
+---
+layout: default
+title: 工作总结
+---
 
 # 工作总结
 

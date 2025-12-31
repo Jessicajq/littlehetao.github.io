@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Docker制作Ubuntu容器
+  </title><link rel="stylesheet" href="/assets/css/custom.css">
+  <style>
+    /* 全局样式重置 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      line-height: 1.7;
+      color: #24292e;
+      background-color: #fafbfc;
+    }
+    
+    /* 头部样式 - 使用更现代的渐变 */
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    /* 主内容区域 - 添加柔和的背景色 */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      line-height: 1.8;
+      color: #333;
+      background-color: #f8fafc;
+    }
+    
+    /* 容器布局 */
+    .container {
+      display: flex;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      gap: 30px;
+    }
+    
+    /* 侧边栏 - 添加微妙的渐变边框 */
+    .sidebar {
+      width: 280px;
+      background-color: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 30px;
+      align-self: flex-start;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(102, 126, 234, 0.1);
+      max-height: calc(100vh - 60px);
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    
+    .sidebar:hover {
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+    
+    /* 侧边栏滚动条样式 */
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 3px;
+    }
+    
+    .sidebar::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+    }
+    
+    .sidebar::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+    
+    .sidebar h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #24292e;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .sidebar ul {
+      list-style: none;
+    }
+    
+    .sidebar li {
+      margin-bottom: 8px;
+    }
+    
+    /* 导航链接样式优化 */
+    .sidebar .nav-link {
+      color: #586069;
+      text-decoration: none;
+      display: block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      transition: all 0.25s ease;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .sidebar .nav-link:hover {
+      background: linear-gradient(90deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      color: #667eea;
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+    
+    /* 当前页面高亮 */
+    .sidebar .nav-link.active {
+      background: linear-gradient(90deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+      color: #667eea;
+      font-weight: 600;
+      border-left: 3px solid #667eea;
+    }
+    
+    .sidebar ul ul {
+      margin-left: 15px;
+      margin-top: 5px;
+    }
+    
+    .sidebar ul ul li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar ul ul a {
+      font-size: 0.88rem;
+      padding: 6px 10px;
+    }
+    
+    /* 主内容区域 */
+    .main-content {
+      flex: 1;
+      background-color: white;
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    }
+    
+    /* 文章标题样式 */
+    .main-content h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #24292e;
+      padding-bottom: 15px;
+      border-bottom: 3px solid #f0f0f0;
+    }
+    
+    .main-content h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 30px 0 15px;
+      color: #24292e;
+    }
+    
+    .main-content h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 25px 0 12px;
+      color: #24292e;
+    }
+    
+    /* 段落样式 */
+    /* 阅读进度条样式 */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+    }
+    /* 优化段落排版 */
+    .main-content p {
+      margin-bottom: 20px;
+      font-size: 1rem;
+      color: #4a5568;
+      line-height: 1.8;
+      letter-spacing: 0.02em;
+    }
+    
+    /* 优化标题层次 */
+    .main-content h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+      color: #2d3748;
+      padding-bottom: 12px;
+      border-bottom: 4px solid #e2e8f0;
+    }
+    
+    .main-content h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 40px 0 18px;
+      color: #2d3748;
+    }
+    
+    .main-content h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 32px 0 15px;
+      color: #2d3748;
+    }
+    
+    /* 列表样式 */
+    .main-content ul,
+    .main-content ol {
+      margin: 0 0 20px 25px;
+      color: #586069;
+    }
+    
+    .main-content li {
+      margin-bottom: 8px;
+      font-size: 0.98rem;
+    }
+    
+    /* 链接样式 */
+    .main-content a {
+      color: #0366d6;
+      text-decoration: none;
+      border-bottom: 1px solid #e1ecf4;
+      transition: all 0.2s ease;
+    }
+    
+    .main-content a:hover {
+      color: #0354a6;
+      border-bottom-color: #0366d6;
+    }
+    
+    /* 图片样式 */
+    .main-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .main-content img:hover {
+      transform: scale(1.02);
+    }
+    
+    /* 代码块样式 */
+    .main-content pre {
+      background-color: #f6f8fa;
+      border-radius: 6px;
+      padding: 16px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      border: 1px solid #e1e4e8;
+    }
+    
+    .main-content code {
+      background-color: #f6f8fa;
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85rem;
+      color: #d73a49;
+    }
+    
+    /* 表格样式 */
+    .main-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+      font-size: 0.95rem;
+    }
+    
+    .main-content th,
+    .main-content td {
+      border: 1px solid #e1e4e8;
+      padding: 10px 15px;
+      text-align: left;
+    }
+    
+    .main-content th {
+      background-color: #f6f8fa;
+      font-weight: 600;
+      color: #24292e;
+    }
+    
+    /* 引用样式 */
+    .main-content blockquote {
+      border-left: 4px solid #0366d6;
+      padding: 12px 20px;
+      margin: 20px 0;
+      background-color: #f6f8fa;
+      border-radius: 0 6px 6px 0;
+      color: #586069;
+      font-style: italic;
+    }
+    
+    /* 页脚样式优化 */
+    footer {
+      background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+      color: white;
+      padding: 40px 0 20px;
+      margin-top: 80px;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto 30px;
+      padding: 0 20px;
+    }
+    
+    .footer-section h3 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      color: white;
+    }
+    
+    .footer-section h4 {
+      font-size: 1.2rem;
+      margin-bottom: 14px;
+      color: white;
+    }
+    
+    .footer-section p {
+      color: #a0aec0;
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-section ul li a {
+      color: #a0aec0;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-section ul li a:hover {
+      color: #667eea;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #4a5568;
+      color: #718096;
+    }
+    
+    @media (max-width: 768px) {
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 992px) {
+      .container {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        position: static;
+        margin-bottom: 20px;
+      }
+      
+      .main-content {
+        padding: 30px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      
+      .main-content {
+        padding: 20px;
+      }
+      
+      .main-content h1 {
+        font-size: 1.75rem;
+      }
+      
+      .main-content h2 {
+        font-size: 1.35rem;
+      }
+    }
+    
+    /* 滚动条样式 */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+    
+    /* 平滑滚动 */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* 搜索框样式 */
+    .search-box {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 12px 40px 12px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s ease;
+      background-color: #f7fafc;
+    }
+    
+    .search-input:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      background-color: white;
+    }
+    
+    .search-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #a0aec0;
+      font-size: 1rem;
+    }
+    
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      display: none;
+      margin-top: 4px;
+    }
+    
+    .search-result-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f7fafc;
+    }
+    
+    .search-result-item:last-child {
+      border-bottom: none;
+    }
+    
+    .search-result-item a {
+      color: #4a5568;
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s ease;
+    }
+    
+    .search-result-item a:hover {
+      color: #667eea;
+    }
+    
+    /* 文章卡片样式 */
+    .article-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin: 30px 0;
+    }
+    
+    .article-card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      border: 1px solid #f0f0f0;
+    }
+    
+    .article-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .article-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    
+    .article-card-header h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+      color: #2d3748;
+    }
+    
+    .article-card-header a {
+      color: #2d3748;
+      text-decoration: none;
+      border-bottom: none;
+    }
+    
+    .article-card-header a:hover {
+      color: #667eea;
+    }
+    
+    .article-date {
+      font-size: 0.85rem;
+      color: #718096;
+      background-color: #f7fafc;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    
+    .article-excerpt {
+      font-size: 0.95rem;
+      color: #4a5568;
+      line-height: 1.7;
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .article-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: #718096;
+    }
+    
+    .article-category, .article-reading-time {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>肖静的个人空间</h1>
+    <p>技术分享、工作总结和生活记录</p>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+  <h2>导航目录</h2>
+  <nav>
+    <ul>
+      <li><a href="/" class="nav-link">🏠 首页</a></li>
+      <li>
+        <a href="/summary/README.html" class="nav-link active">💻 技术分享</a>
+        <ul>
+          <li><a href="/summary/mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz安装.html" class="nav-link">MySQL 5.7安装</a></li>
+          <li><a href="/summary/mysql主从同步配置.html" class="nav-link">MySQL主从同步</a></li>
+          <li><a href="/summary/使用docker制作一个centos7容器.html" class="nav-link">Docker CentOS7容器</a></li>
+          <li><a href="/summary/docker制作Ubuntu容器.html" class="nav-link">Docker Ubuntu容器</a></li>
+          <li><a href="/summary/linux下时间问题.html" class="nav-link">Linux时间问题</a></li>
+          <li><a href="/summary/qtcreator编译googletest.html" class="nav-link">QtCreator GoogleTest</a></li>
+          <li><a href="/summary/配置qt控件的聚焦和输入限制.html" class="nav-link">Qt控件配置</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="/workexperience/workREADME.html" class="nav-link">💼 工作总结</a>
+        <ul>
+          <li><a href="/workexperience/工作常用mysql语句.html" class="nav-link">常用MySQL语句</a></li>
+          <li><a href="/workexperience/执行jmeter脚本乱码排查过程.html" class="nav-link">JMeter乱码排查</a></li>
+          <li><a href="/workexperience/linux工作常用命令.html" class="nav-link">Linux常用命令</a></li>
+          <li><a href="/workexperience/es命令总结.html" class="nav-link">ES命令总结</a></li>
+          <li><a href="/workexperience/research and development.html" class="nav-link">研发配置</a></li>
+          <li><a href="/workexperience/jupyter notebook.html" class="nav-link">Jupyter Notebook</a></li>
+          <li><a href="/workexperience/gunicorn运行报错.html" class="nav-link">Gunicorn报错</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="/life/lifeSummary.html" class="nav-link">🌸 生活记录</a>
+        <ul>
+          <li><a href="/life/二胎生产日记.html" class="nav-link">二胎生产日记</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</aside>
+    
+    <main class="main-content">
+      <h2 id="docker制作容器--20210716-120730">docker制作容器  2021/07/16 12:07:30</h2>
+
+<p><a href="#pull">一、拉取Ubuntu镜像</a></p>
+
+<p><a href="#install">二、安装各种工具包</a></p>
+
+<p><a href="#install1">2.1 安装ssh</a>
+<a href="#install2">2.2 安装必备工具：jdk,node,jmeter，nginx，gunicorn</a></p>
+
+<p><a href="#run">三、部署程序和启动</a></p>
+
+<hr />
+<h6 id="参考连接httpswwwrunoobcomdockerdocker-install-ubuntuhtml">参考连接https://www.runoob.com/docker/docker-install-ubuntu.html</h6>
+<h4 id="-1拉取最新版的-ubuntu-镜像-"><a id="pull"> 1.拉取最新版的 Ubuntu 镜像 </a></h4>
+<p><img src="images/docker的Ubuntu截图/img_1.png" alt="img_1.png" /></p>
+
+<h4 id="2创建并启动容器">2.创建并启动容器</h4>
+<p>docker run -it –name product_api_product  -p 10025:22 -p 10084:80 -p 10055:5000 ubuntu:latest</p>
+
+<p><img src="images/docker的Ubuntu截图/img_2.png" alt="img_2.png" /></p>
+
+<h4 id="3进入刚才创建的容器">3.进入刚才创建的容器</h4>
+<p>docker exec -it product_api_sj bash</p>
+
+<p><img src="images/docker的Ubuntu截图/img_3.png" alt="img_3.png" /></p>
+
+<h4 id="4安装各种工具包-"><a id="install">4.安装各种工具包 </a></h4>
+<h5 id="41-安装ssh参考文档httpswwwcnblogscommengwp11413461html"><a id="install1">4.1 安装ssh，参考文档https://www.cnblogs.com/mengw/p/11413461.html;</a></h5>
+<p>①执行更新： apt-get update
+<img src="images/docker的Ubuntu截图/img_4.png" alt="img_4.png" />
+② 安装ssh-client命令：apt-get install openssh-client
+<img src="images/docker的Ubuntu截图/img_5.png" alt="img_5.png" />
+③安装ssh-server命令，注意要选择地区：apt-get install openssh-server
+<img src="images/docker的Ubuntu截图/img_7.png" alt="img_7.png" />
+<img src="images/docker的Ubuntu截图/img_6.png" alt="img_6.png" />
+④启动服务，和检查是否正常启动：/etc/init.d/ssh start和ps -e|grep ssh
+<img src="images/docker的Ubuntu截图/img_8.png" alt="img_8.png" />
+⑤编辑sshd_config文件。
+1.先安装vim，命令：apt-get install vim
+<img src="images/docker的Ubuntu截图/img_9.png" alt="img_9.png" />
+2.编辑sshd_config文件，命令：vim /etc/ssh/sshd_config，编辑好后保存退出  ESC + : + WQ
+<img src="images/docker的Ubuntu截图/img_10.png" alt="img_10.png" />
+3.重启ssh服务和设置密码，命令：service ssh restart 和passwd root
+<img src="images/docker的Ubuntu截图/img_11.png" alt="img_11.png" />
+⑥查看容器的IP
+1.安装net-tools工具包，命令：apt-get install net-tools
+2.查看IP，命令：ifconfig
+<img src="images/docker的Ubuntu截图/img_12.png" alt="img_12.png" /></p>
+
+<h5 id="42检查是否有python有就不用安装python">4.2.检查是否有python，有就不用安装python：</h5>
+<p><img src="images/docker的Ubuntu截图/img_13.png" alt="img_13.png" /></p>
+
+<h5 id="43已知下载好linux下的jdknodejmeter手动解压安装jdknodejmeter等"><a id="install2">4.3.已知下载好linux下的jdk,node,jmeter.手动解压安装Jdk，node,jmeter等：</a></h5>
+<p>①安装jdk，参考https://blog.csdn.net/weixin_38924500/article/details/106215048
+1.创建文件夹，并解压，命令：sudo tar -axvf /tools/jdk-8u11-linux-x64.tar.gz -C /usr/local/jvm/</p>
+
+<p><img src="images/docker的Ubuntu截图/img_14.png" alt="img_14.png" />
+2.修改环境变量，命令：sudo vi ~/.bashrc
+使环境变量马上生效，命令：source ~/.bashrc
+系统注册此jdk,命令：sudo update-alternatives –install /usr/bin/java java /usr/local/jvm/jdk1.8.0_11/bin/java 300
+查看jdk版本，命令：java -version
+<img src="images/docker的Ubuntu截图/img_15.png" alt="img_15.png" />
+②安装jmeter.同安装jdk一样，先创建文件夹，再解压，改环境变量。
+执行解压文件命令：sudo tar -zxvf /tools/apache-jmeter-5.4.1.tgz -C /usr/local/jmeter/
+<img src="images/docker的Ubuntu截图/img_16.png" alt="img_16.png" />
+查看版本号:jmeter –version</p>
+
+<p>③安装node,先解压，再加环境变量。
+解压命令：sudo tar  -xvf /tools/node-v14.17.0-linux-x64.tar.xz -C /usr/local/nodejs/
+查看版本号：node -v
+<img src="images/docker的Ubuntu截图/img_17.png" alt="img_17.png" /></p>
+
+<p>④安装nginx. 参考：https://blog.csdn.net/qq_23832313/article/details/83578836
+1.安装依赖包（我也不知道这些依赖包有什么用）
+apt-get install gcc
+apt-get install libpcre3 libpcre3-dev
+apt-get install zlib1g zlib1g-dev
+sudo apt-get install openssl 
+sudo apt-get install libssl-dev
+<img src="images/docker的Ubuntu截图/img_18.png" alt="img_18.png" />
+2.下载好的nginx压缩包放到服务器上，解压。其中，make命令没有，我重新安装的。
+<img src="images/docker的Ubuntu截图/img_19.png" alt="img_19.png" />
+3.启动和检查nginx是否安装成功。
+<img src="images/docker的Ubuntu截图/img_20.png" alt="img_20.png" />
+4.更改nginx配置，使其监听80or443端口后，访问指定的前端路径和后端接口；这里就看个人部署在服务器上的路径（nginx.conf可以找我要）。
+5.再次启动运行nginx。此时发现报错，nginx: [emerg] open() “/var/log/nginx/access.log” failed (2: No such file or directory)
+新建缺少的对应文件夹和文件即可。
+<img src="images/docker的Ubuntu截图/img_25.png" alt="img_25.png" /></p>
+
+<h5 id="44安装gunicorn">4.4.安装gunicorn：</h5>
+<p>①检查没有pip,先安装pip,命令：sudo apt-get install python3-pip
+<img src="images/docker的Ubuntu截图/img_21.png" alt="img_21.png" />
+<img src="images/docker的Ubuntu截图/img_22.png" alt="img_22.png" />
+②安装gunicorn
+<img src="images/docker的Ubuntu截图/img_23.png" alt="img_23.png" />
+③安装虚拟环境，命令：
+sudo apt-get install python-setuptools
+sudo pip install virtualenv
+④进入flask应用部署目录，创建虚拟环境并激活。
+cd /home/ailpha_api/server
+virtualenv venv
+. venv/bin/activate
+⑤各种需要安装的组件：requirements.txt
+进入requirements.txt所在目录，执行命令： pip install -r requirements.txt 
+其中安装报错ERROR: No matching distribution found for mysqlclient==2.0.3
+，执行了以下依赖包后，重新安装组件。
+<img src="images/docker的Ubuntu截图/img_24.png" alt="img_24.png" /></p>
+
+<h4 id="5启动程序运行访问"><a id="run">5.启动程序，运行，访问</a></h4>
+<p>①调试运行，看环境是否搭建好。进入后端的部署路径入口处，如：cd /home/ailpha_api/server，直接运行python run.py 启动整个应用工程。注意运行时报错etrieving data from RDS gives AttributeError: ‘sqlalchemy.cimmutabledict.immutabledict’ object has no attribute ‘setdefault’
+解决方案：pip install –upgrade ‘SQLAlchemy&lt;1.4’，安装小于1.4版本的即可。
+②后端正常访问后，直接打开前端页面，看是否正常访问：http://宿主机ip+宿主机端口。  如果不能访问，说明nginx配置有问题，需再检查下；
+③前后端都正常后，前端是否正常登录，访问后端接口。
+④后端改变运行方式，后台挂起运行。使用命令：#①进入程序入口： cd /home/ailpha_api/server    #②后台挂起：
+nohup gunicorn -w4 –worker-class=gevent -b0.0.0.0:5000 run:app –reload &gt;gunicorn.log 2&gt;&amp; 1 &amp;</p>
+
+<h4 id="6以上过程的其他操作补充">6.以上过程的其他操作补充</h4>
+<p>6.1容器内部获取信息,命令： docker inspect 容器id或者容器名称</p>
+
+<p>6.2进入容器后，创建flask工程项目的虚拟目录。
+apt-get update</p>
+
+<p>apt-get install sudo</p>
+
+<p>sudo apt-get install python3-pip
+sudo apt-get install python-setuptools
+sudo pip install virtualenv
+virtualenv venv
+. venv/bin/activate</p>
+
+<h6 id="写到最后以上内容linux下的相关软件压缩包由于上传不到该网页可以私下找我要">写到最后：以上内容linux下的相关软件压缩包。（由于上传不到该网页，可以私下找我要）</h6>
+
+
+    </main>
+  </div>
+
+  <footer>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>肖静的个人空间</h3>
+          <p>技术分享、工作总结和生活记录</p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>快速链接</h4>
+          <ul>
+            <li><a href="/">首页</a></li>
+            <li><a href="/summary/README.html">技术分享</a></li>
+            <li><a href="/workexperience/workREADME.html">工作总结</a></li>
+            <li><a href="/life/lifeSummary.html">生活总结</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>联系方式</h4>
+          <p>📧 email@example.com</p>
+          <p>🐦 @username</p>
+          <p>📱 微信: example</p>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 肖静的个人空间</p>
+        <p>使用 Jekyll 构建 | 感谢您的访问</p>
+      </div>
+    </footer>
+  </footer>
+</body>
+</html>

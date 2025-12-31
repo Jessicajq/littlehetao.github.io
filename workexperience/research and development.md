@@ -1,3 +1,8 @@
+---
+layout: default
+title: 研发配置
+---
+
 ## 开发过程配置  2021/07/22 12:07:30 
 前置条件：本地先装好python3+，以及设置好环境变量。
 ### 1.本地研发环境搭建
@@ -46,3 +51,4 @@ file --- > settings --- > Project interpreter，
 ![img_13.png](截图/research development/img_13.png)
 
 
+

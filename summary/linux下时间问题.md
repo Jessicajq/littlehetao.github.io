@@ -1,3 +1,8 @@
+---
+layout: default
+title: Linux下时间问题
+---
+
 ## linux下时间问题 2021/06/16 20:07:30 
 ---
 修改linux系统时间: hwclock/clock 命令查看、设置硬件时间 查看系统硬件时钟

@@ -2,36 +2,35 @@
   <h2>导航目录</h2>
   <nav>
     <ul>
-      <li><a href="/">🏠 首页</a></li>
+      <li><a href="/" class="nav-link{% if page.url == '/' %} active{% endif %}">🏠 首页</a></li>
       <li>
-        <a href="/summary/README.html">💻 技术分享</a>
+        <a href="/summary/README.html" class="nav-link{% if page.url contains '/summary/' %} active{% endif %}">💻 技术分享</a>
         <ul>
-          <li><a href="/summary/mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz安装.html">MySQL 5.7安装</a></li>
-          <li><a href="/summary/mysql主从同步配置.html">MySQL主从同步配置</a></li>
-          <li><a href="/summary/linux下时间问题.html">Linux下时间问题</a></li>
-          <li><a href="/summary/使用docker制作一个centos7容器.html">Docker制作CentOS7容器</a></li>
-          <li><a href="/summary/docker制作Ubuntu容器.html">Docker制作Ubuntu容器</a></li>
-          <li><a href="/summary/qtcreator编译googletest.html">QtCreator编译GoogleTest</a></li>
-          <li><a href="/summary/配置qt控件的聚焦和输入限制.html">Qt控件聚焦和输入限制</a></li>
-          <li><a href="/summary/2025年度总结.html">2025年度总结</a></li>
+          <li><a href="/summary/mysql-5.7.21-linux-glibc2.12-x86_64.tar.gz安装.html" class="nav-link">MySQL 5.7安装</a></li>
+          <li><a href="/summary/mysql主从同步配置.html" class="nav-link">MySQL主从同步</a></li>
+          <li><a href="/summary/使用docker制作一个centos7容器.html" class="nav-link">Docker CentOS7容器</a></li>
+          <li><a href="/summary/docker制作Ubuntu容器.html" class="nav-link">Docker Ubuntu容器</a></li>
+          <li><a href="/summary/linux下时间问题.html" class="nav-link">Linux时间问题</a></li>
+          <li><a href="/summary/qtcreator编译googletest.html" class="nav-link">QtCreator GoogleTest</a></li>
+          <li><a href="/summary/配置qt控件的聚焦和输入限制.html" class="nav-link">Qt控件配置</a></li>
         </ul>
       </li>
       <li>
-        <a href="/workexperience/workREADME.html">📊 工作总结</a>
+        <a href="/workexperience/workREADME.html" class="nav-link{% if page.url contains '/workexperience/' %} active{% endif %}">💼 工作总结</a>
         <ul>
-          <li><a href="/workexperience/工作常用mysql语句.html">工作常用MySQL语句</a></li>
-          <li><a href="/workexperience/执行jmeter脚本乱码排查过程.html">JMeter乱码排查</a></li>
-          <li><a href="/workexperience/linux工作常用命令.html">Linux工作常用命令</a></li>
-          <li><a href="/workexperience/es命令总结.html">ES命令总结</a></li>
-          <li><a href="/workexperience/gunicorn运行报错.html">Gunicorn运行报错</a></li>
-          <li><a href="/workexperience/jupyter notebook.html">Jupyter Notebook使用</a></li>
-          <li><a href="/workexperience/research and development.html">PyCharm远程开发</a></li>
+          <li><a href="/workexperience/工作常用mysql语句.html" class="nav-link">常用MySQL语句</a></li>
+          <li><a href="/workexperience/执行jmeter脚本乱码排查过程.html" class="nav-link">JMeter乱码排查</a></li>
+          <li><a href="/workexperience/linux工作常用命令.html" class="nav-link">Linux常用命令</a></li>
+          <li><a href="/workexperience/es命令总结.html" class="nav-link">ES命令总结</a></li>
+          <li><a href="/workexperience/research and development.html" class="nav-link">研发配置</a></li>
+          <li><a href="/workexperience/jupyter notebook.html" class="nav-link">Jupyter Notebook</a></li>
+          <li><a href="/workexperience/gunicorn运行报错.html" class="nav-link">Gunicorn报错</a></li>
         </ul>
       </li>
       <li>
-        <a href="/life/lifeSummary.html">❤️ 生活总结</a>
+        <a href="/life/lifeSummary.html" class="nav-link{% if page.url contains '/life/' %} active{% endif %}">🌸 生活记录</a>
         <ul>
-          <li><a href="/life/二胎生产日记.html">二胎生产日记</a></li>
+          <li><a href="/life/二胎生产日记.html" class="nav-link">二胎生产日记</a></li>
         </ul>
       </li>
     </ul>

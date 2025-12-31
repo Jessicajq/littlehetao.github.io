@@ -1,3 +1,7 @@
+---
+layout: default
+title: Linux工作常用命令
+---
 ## 常用命令  2021/06/29 17:07:30 
 ---
 ### 1.docker 容器里如何快捷从本地上传文件，从容器里下载文件到本地
@@ -18,3 +22,4 @@ SecureCRT设置默认路径：
 Options -> Session Options -> Terminal -> Xmodem/Zmodem ->Directories
 Xshell设置默认路径：
 右键会话 -> 属性 -> ZMODEM -> 接收文件夹
+

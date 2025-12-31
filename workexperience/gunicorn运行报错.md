@@ -1,3 +1,8 @@
+---
+layout: default
+title: Gunicorn运行报错排查
+---
+
 ## 常用sql  2021/07/12 12:07:30 
 ---
 ### 1.现象截图
@@ -54,4 +59,4 @@ $ pip install gevent   （使用gevent workers）
 ### 8.指定协程工作模式，--worker-class=gevent or eventlet
 nohup /usr/bin/python /usr/local/python37/bin/gunicorn -w4 --worker-class=gevent -b172.17.0.4:5000 run:app --reload >gunicorn.log 2>& 1 &
 
-经过上述启动命令，挂起flask框架，服务端没有报错了。但是用起来还是很慢，404问题没有解决。
+经过上述启动命令，挂起flask框架，服务端没有报错了。但是用起来还很慢，404问题没有解决。

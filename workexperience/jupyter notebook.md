@@ -1,3 +1,8 @@
+---
+layout: default
+title: Jupyter Notebook使用
+---
+
 # 2021-07-21 jupyter notebook使用
 1.安装
 ![img_1.png](截图/jupyter notebook/img_1.png)

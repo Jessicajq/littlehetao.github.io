@@ -1,0 +1,28 @@
+---
+---
+
+// 修复 invert 函数弃用警告
+// 如果 $body-link-color 变量存在，使用 color.invert 替代
+// 或者直接指定 outline 颜色
+
+// 方法1：如果知道链接颜色值，直接指定
+// 假设链接颜色是 #0366d6
+a:focus {
+  outline: thick solid #0366d6;
+}
+
+// 方法2：使用 Sass 的 color.invert
+// 需要确保在 Sass 上下文中
+/*
+@use "sass:color";
+
+$body-link-color: #0366d6 !default;
+
+a:focus {
+  outline: thick solid color.invert($body-link-color);
+}
+*/
+
+# Custom styles
+
+/* 这里可以添加自定义样式 */

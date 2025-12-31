@@ -1,3 +1,8 @@
+---
+layout: default
+title: Docker制作Ubuntu容器
+---
+
 ## docker制作容器  2021/07/16 12:07:30 
 
 [一、拉取Ubuntu镜像](#pull)
@@ -134,3 +139,4 @@ virtualenv venv
 . venv/bin/activate
 
 ###### 写到最后：以上内容linux下的相关软件压缩包。（由于上传不到该网页，可以私下找我要）
+
