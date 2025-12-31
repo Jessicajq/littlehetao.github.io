@@ -736,18 +736,23 @@
     
     <div class="overlay" id="overlay"></div>
     
+    <script>
+        // 设置基础URL（项目网站必须）
+        var BASEURL = '/littlehetao.github.io';
+    </script>
+    
     <div class="nav-menu" id="nav-menu">
         <button class="close-nav" id="close-nav">×</button>
         <h3>◇ 系统导航 ◇</h3>
-        <a href="{{ site.baseurl }}/summary/README.html" class="nav-item tech" onclick="hideNavMenu()">
+        <a href="javascript:void(0)" onclick="navigateTo(BASEURL + '/summary/README.html')" class="nav-item tech">
             <span class="nav-icon">💻</span>
             <span>技术分享</span>
         </a>
-        <a href="{{ site.baseurl }}/workexperience/workREADME.html" class="nav-item work" onclick="hideNavMenu()">
+        <a href="javascript:void(0)" onclick="navigateTo(BASEURL + '/workexperience/workREADME.html')" class="nav-item work">
             <span class="nav-icon">💼</span>
             <span>工作总结</span>
         </a>
-        <a href="{{ site.baseurl }}/life/lifeSummary.html" class="nav-item life" onclick="hideNavMenu()">
+        <a href="javascript:void(0)" onclick="navigateTo(BASEURL + '/life/lifeSummary.html')" class="nav-item life">
             <span class="nav-icon">🌸</span>
             <span>生活记录</span>
         </a>
@@ -803,8 +808,8 @@
                         <div class="stat-label">发现缺陷</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number" data-target="50">0+</div>
-                        <div class="stat-label">团队成员</div>
+                        <div class="stat-number" data-target="30">0+</div>
+                        <div class="stat-label">团队成员最多时</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-number" data-target="98">0%</div>
@@ -812,9 +817,9 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="sandbox-container">
-                <h2 class="sandbox-title">◇ 🎮 元素奇幻乐园 ◇</h2>
+                <h2 class="sandbox-title">◇ 🎮 元宇宙粒子GAME ◇</h2>
                 
                 <div class="game-rules">
                     <h4>🎯 游戏规则</h4>
@@ -861,7 +866,7 @@
                 
                 <div class="controls">
                     <button class="action-btn" id="clear-btn">清空画布</button>
-                    <button class="action-btn" id="preset-oil-fire">预设：油火</button>
+                    <button class="action-btn" id="preset-oil-fire">预设：油水</button>
                     <button class="action-btn" id="preset-water-fall">预设：瀑布</button>
                 </div>
                 <div class="stats-display">
@@ -872,7 +877,20 @@
     </div>
 
     <script>
-        const TYPE_EMPTY = 0;
+        // 导航函数 - 支持项目网站路径
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+    
+    // 隐藏导航菜单函数
+    function hideNavMenu() {
+        const navMenu = document.getElementById('nav-menu');
+        if (navMenu) {
+            navMenu.classList.remove('show');
+        }
+    }
+    
+    const TYPE_EMPTY = 0;
         const TYPE_SAND = 1;
         const TYPE_WATER = 2;
         const TYPE_FIRE = 3;
