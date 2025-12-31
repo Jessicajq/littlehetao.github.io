@@ -3,6 +3,9 @@ title: 肖静的个人空间
 description: 技术分享、工作总结和生活记录
 encoding: utf-8
 
+# 设置基础URL（项目网站必须）
+baseurl: /littlehetao.github.io
+
 # 禁用主题的 Sass 自动处理
 sass:
   style: compressed
@@ -10,4 +13,4 @@ defaults:
   - scope:
       path: ""
     values:
-      layout: "default"
+      layout: "default"
