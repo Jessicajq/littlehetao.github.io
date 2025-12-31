@@ -438,16 +438,55 @@
                 -2px 0 #ff0000,
                 2px 0 #0000ff,
                 0 0 20px #00ff00,
-                0 0 40px #00ff00;
+                0 0 40px #00ff00,
+                0 0 60px rgba(0, 255, 0, 0.5);
             z-index: 9999;
             opacity: 0;
             pointer-events: none;
             letter-spacing: 5px;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 255, 0, 0.3);
         }
 
         .glitch-text.active {
             opacity: 1;
-            animation: glitchRGB 0.2s infinite;
+            animation: smoothRGB 0.15s infinite, lightShake 2s infinite;
+        }
+
+        /* 故障文本切片效果 */
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .glitch-active .glitch-text.active::before {
+            content: attr(data-text);
+            position: absolute;
+            left: -2px;
+            text-shadow: 2px 0 #ff0000;
+            clip-path: inset(0 0 0 0);
+            animation: glitchSlice 0.3s infinite linear alternate-reverse;
+            opacity: 0.8;
+            color: #00ffff;
+        }
+
+        .glitch-active .glitch-text.active::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 2px;
+            text-shadow: -2px 0 #0000ff;
+            clip-path: inset(0 0 0 0);
+            animation: glitchSlice 0.35s infinite linear alternate-reverse;
+            opacity: 0.8;
+            color: #ff00ff;
         }
 
         .overlay {
@@ -732,7 +771,7 @@
         <div class="scan-line"></div>
         <div class="scan-line"></div>
     </div>
-    <div class="glitch-text" id="glitch-text">⚠️ SYSTEM BREACH DETECTED ⚠️</div>
+    <div class="glitch-text" id="glitch-text" data-text="⚠️ SYSTEM BREACH DETECTED ⚠️">⚠️ SYSTEM BREACH DETECTED ⚠️</div>
     
     <div class="overlay" id="overlay"></div>
     
@@ -1396,6 +1435,10 @@
                         overlay.classList.remove('active');
                         glitchText.classList.remove('active');
                         showNavMenu();
+                        // 恢复按钮状态
+                        hackBtn.disabled = false;
+                        hackBtn.style.opacity = '1';
+                        hackBtn.style.cursor = 'pointer';
                     }, 300);
                 }
             }, 150);
