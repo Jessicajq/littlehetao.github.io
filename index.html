@@ -1445,15 +1445,15 @@
             
             // 随机抖动整个页面
             const shakeInterval = setInterval(() => {
-                const shakeX = (Math.random() - 0.5) * 10;
-                const shakeY = (Math.random() - 0.5) * 10;
+                const shakeX = (Math.random() - 0.5) * 6;
+                const shakeY = (Math.random() - 0.5) * 6;
                 document.body.style.transform = `translate(${shakeX}px, ${shakeY}px)`;
                 
                 if (glitchCount >= maxGlitches) {
                     clearInterval(shakeInterval);
                     document.body.style.transform = '';
                 }
-            }, 50);
+            }, 80); // 抖动间隔更慢
         }
 
         // 绑定导航菜单事件
