@@ -372,10 +372,10 @@
 
         /* 闪烁效果 */
         @keyframes glitchFlicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+            0%, 20%, 24%, 55%, 54%, 100% {
                 opacity: 1;
             }
-            20%, 24%, 55% {
+            21%, 23%, 56% {
                 opacity: 0.3;
             }
         }
@@ -693,19 +693,32 @@
             color: #0f0;
             cursor: pointer;
             transition: all 0.3s ease;
-            border-radius: 5px;
         }
 
-        .element-btn:hover, .element-btn.active {
+        .element-btn:hover {
             background: rgba(0, 255, 0, 0.2);
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+
+        .element-btn.active {
+            background: rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .action-btn {
-            padding: 10px 20px;
-            border: 1px solid #0f0;
+            padding: 10px 25px;
+            border: 2px solid #0f0;
             background: transparent;
             color: #0f0;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             border-radius: 5px;
@@ -713,14 +726,23 @@
 
         .action-btn:hover {
             background: rgba(0, 255, 0, 0.2);
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            transform: scale(1.05);
         }
 
         .stats-display {
             text-align: center;
-            font-size: 0.9rem;
-            color: rgba(0, 255, 0, 0.7);
             margin-top: 15px;
+            color: rgba(0, 255, 0, 0.8);
+            font-family: 'Courier New', monospace;
+        }
+
+        .sandbox-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0f0;
+            text-shadow: 0 0 20px #0f0;
+            font-size: 1.3rem;
         }
 
         @media (max-width: 768px) {
@@ -729,94 +751,83 @@
                 letter-spacing: 4px;
             }
 
-            .typing-text {
-                font-size: 1rem;
+            .nav-menu {
+                width: 100%;
+                right: -100%;
             }
 
-            .hack-btn {
-                padding: 12px 30px;
-                font-size: 1rem;
-            }
-
-            .profile-card {
-                padding: 20px;
-                margin-top: 20px;
-            }
-
-            .profile-card h2 {
-                font-size: 1.4rem;
+            .rule-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .stats-container {
-                flex-direction: column;
-                align-items: center;
+                flex-wrap: wrap;
+                gap: 20px;
             }
 
             .stat-item {
-                width: 100%;
-                max-width: 200px;
+                flex: 1 1 45%;
             }
 
-            #sandbox-canvas {
-                width: 100% !important;
-                height: auto !important;
+            .stat-number {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Glitch效果容器 -->
-    <div class="glitch-overlay" id="glitch-overlay">
-        <div class="scan-line"></div>
-        <div class="scan-line"></div>
-        <div class="scan-line"></div>
-    </div>
-    <div class="glitch-text" id="glitch-text" data-text="⚠️ SYSTEM BREACH DETECTED ⚠️">⚠️ SYSTEM BREACH DETECTED ⚠️</div>
-    
-    <div class="overlay" id="overlay"></div>
-    
-    <script>
-        // 设置基础URL（项目网站必须）
-        var BASEURL = '/littlehetao.github.io';
-    </script>
-    
-    <div class="nav-menu" id="nav-menu">
-        <button class="close-nav" id="close-nav">×</button>
-        <h3>◇ 系统导航 ◇</h3>
-        <a href="javascript:void(0)" onclick="navigateTo(BASEURL + '/summary/README.html')" class="nav-item tech">
-            <span class="nav-icon">💻</span>
-            <span>技术分享</span>
-        </a>
-        <a href="javascript:void(0)" onclick="navigateTo(BASEURL + '/workexperience/workREADME.html')" class="nav-item work">
-            <span class="nav-icon">💼</span>
-            <span>工作总结</span>
-        </a>
-        <a href="javascript:void(0)" onclick="navigateTo(BASEURL + '/life/lifeSummary.html')" class="nav-item life">
-            <span class="nav-icon">🌸</span>
-            <span>生活记录</span>
-        </a>
-    </div>
-
     <canvas id="matrix-canvas"></canvas>
     <canvas id="particles"></canvas>
+
+    <div class="glitch-overlay">
+        <div class="scan-line"></div>
+        <div class="scan-line"></div>
+        <div class="scan-line"></div>
+    </div>
+
+    <div class="glitch-text" data-text="SYSTEM BREACH DETECTED">SYSTEM BREACH DETECTED</div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="nav-menu" id="nav-menu">
+        <button class="close-nav" onclick="hideNavMenu()">✕</button>
+        <h3>◈ 导航菜单 ◈</h3>
+        <a href="/life/lifeSummary.html" class="nav-item life" onclick="hideNavMenu()">
+            <span class="nav-icon">💚</span>
+            <span>生活沉淀</span>
+        </a>
+        <a href="/workexperience/workREADME.html" class="nav-item work" onclick="hideNavMenu()">
+            <span class="nav-icon">💼</span>
+            <span>工作经历</span>
+        </a>
+        <a href="/summary/README.html" class="nav-item tech" onclick="hideNavMenu()">
+            <span class="nav-icon">🔧</span>
+            <span>技术总结</span>
+        </a>
+    </div>
+
     <div class="container">
-        <div class="main-content">
+        <div class="main-content glitch-container">
             <div class="header">
-                <h1>肖 静</h1>
-                <p class="subtitle">资深测试工程师 | 10年从业经验</p>
+                <h1>肖静</h1>
+                <p class="subtitle">资深测试工程师 | 10年+经验</p>
             </div>
+
             <div class="typing-container">
-                <span class="typing-text" id="typewriter"></span>
+                <span class="typing-text" id="typing-text"></span>
             </div>
-            <button class="hack-btn" id="hack-btn">入侵系统</button>
+
+            <button class="hack-btn" id="hack-btn" onclick="toggleProfile()">
+                👁️ 查看档案
+            </button>
 
             <div class="profile-card" id="profile-card">
-                <h2>◇ 个人档案 ◇</h2>
+                <h2>👤 个人信息</h2>
                 
                 <div class="profile-section">
-                    <h3>基本信息</h3>
-                    <p>👩‍💼 肖静 | 资深测试工程师</p>
-                    <p>📧 联系邮箱: 804629822@qq.com</p>
+                    <h3>📋 基本信息</h3>
+                    <p>🔮 昵称: 静静子</p>
+                    <p>📧 邮箱: 156489843@qq.com</p>
                     <p>📍 所在城市: 中国-浙江-杭州</p>
                     <p>💼 工作年限: 10年+</p>
                 </div>
@@ -833,7 +844,11 @@
                         <span class="skill-tag">🎭 Playwright</span>
                         <span class="skill-tag">🐳 Docker</span>
                         <span class="skill-tag">🐞 缺陷管理</span>
-                        <span class="skill-tag">📊 测试报告</span>
+                        <span class="skill-tag">📊 代码覆盖率</span>
+                        <span class="skill-tag">📈 质量指标体系</span>
+                        <span class="skill-tag">📋 流程优化</span>
+                        <span class="skill-tag">📏 标准化建设</span>
+
                     </div>
                 </div>
                 
@@ -1023,217 +1038,18 @@
                     data[idx] = r;
                     data[idx + 1] = g;
                     data[idx + 2] = b;
-                    data[idx + 3] = type === TYPE_EMPTY ? 0 : 255;
+                    data[idx + 3] = 255;
                 }
             }
 
             ctx.putImageData(imageData, 0, 0);
         }
 
-        function isValid(x, y) {
-            return x >= 0 && x < width && y >= 0 && y < height;
-        }
-
-        function swap(x1, y1, x2, y2) {
-            const temp = grid[y1][x1];
-            grid[y1][x1] = grid[y2][x2];
-            grid[y2][x2] = temp;
-        }
-
-        function explode(x, y, power) {
-            for (let dy = -power; dy <= power; dy++) {
-                for (let dx = -power; dx <= power; dx++) {
-                    if (dx * dx + dy * dy <= power * power) {
-                        const nx = x + dx;
-                        const ny = y + dy;
-                        if (isValid(nx, ny) && grid[ny][nx] === TYPE_EMPTY && Math.random() < 0.5) {
-                            grid[ny][nx] = TYPE_FIRE;
-                        }
-                    }
-                }
-            }
-        }
-
-        function createSteam(x, y) {
-            for (let dx = -1; dx <= 1; dx++) {
-                for (let dy = -2; dy <= -1; dy++) {
-                    const nx = x + dx;
-                    const ny = y + dy;
-                    if (isValid(nx, ny) && grid[ny][nx] === TYPE_EMPTY && Math.random() < 0.3) {
-                        grid[ny][nx] = TYPE_STEAM;
-                    }
-                }
-            }
-        }
-
         function update() {
-            const cells = [];
-            for (let y = 0; y < height; y++) {
-                for (let x = 0; x < width; x++) {
-                    if (grid[y][x] !== TYPE_EMPTY) {
-                        cells.push([x, y]);
-                    }
-                }
-            }
-
-            const shuffled = cells.sort(() => Math.random() - 0.5);
-            for (const [x, y] of shuffled) {
-                const type = grid[y][x];
-
-                if (type === TYPE_WATER) {
-                    // 水的物理行为：向下落，向两边流动
-                    if (y < height - 1) {
-                        // 向下流动
-                        if (grid[y + 1][x] === TYPE_EMPTY) {
-                            swap(x, y, x, y + 1);
-                        } 
-                        // 遇到沙子下沉
-                        else if (grid[y + 1][x] === TYPE_SAND && Math.random() < 0.3) {
-                            swap(x, y, x, y + 1);
-                        }
-                        // 遇到火产生蒸汽
-                        else if (grid[y + 1][x] === TYPE_FIRE) {
-                            if (Math.random() < 0.5) {
-                                grid[y][x] = TYPE_STEAM;
-                                grid[y + 1][x] = TYPE_EMPTY;
-                            }
-                        }
-                        // 向两边流动
-                        else {
-                            const leftEmpty = x > 0 && grid[y][x - 1] === TYPE_EMPTY;
-                            const rightEmpty = x < width - 1 && grid[y][x + 1] === TYPE_EMPTY;
-                            
-                            if (leftEmpty && rightEmpty) {
-                                if (Math.random() < 0.5) {
-                                    swap(x, y, x - 1, y);
-                                } else {
-                                    swap(x, y, x + 1, y);
-                                }
-                            } else if (leftEmpty) {
-                                if (Math.random() < 0.5) swap(x, y, x - 1, y);
-                            } else if (rightEmpty) {
-                                if (Math.random() < 0.5) swap(x, y, x + 1, y);
-                            }
-                        }
-                    }
-                }
-                else if (type === TYPE_SAND) {
-                    // 沙子的物理行为：受重力落下，遇到水停止
-                    if (y < height - 1) {
-                        if (grid[y + 1][x] === TYPE_EMPTY) {
-                            swap(x, y, x, y + 1);
-                        }
-                        // 遇到水下沉
-                        else if (grid[y + 1][x] === TYPE_WATER && Math.random() < 0.5) {
-                            swap(x, y, x, y + 1);
-                        }
-                        // 向两边滑动
-                        else {
-                            const leftEmpty = x > 0 && grid[y][x - 1] === TYPE_EMPTY;
-                            const rightEmpty = x < width - 1 && grid[y][x + 1] === TYPE_EMPTY;
-                            
-                            if (leftEmpty && rightEmpty) {
-                                if (Math.random() < 0.5) {
-                                    swap(x, y, x - 1, y);
-                                } else {
-                                    swap(x, y, x + 1, y);
-                                }
-                            } else if (leftEmpty) {
-                                if (Math.random() < 0.5) swap(x, y, x - 1, y);
-                            } else if (rightEmpty) {
-                                if (Math.random() < 0.5) swap(x, y, x + 1, y);
-                            }
-                        }
-                    }
-                }
-                else if (type === TYPE_FIRE) {
-                    // 火的物理行为：向上飘，逐渐熄灭
-                    if (Math.random() < 0.1) {
-                        // 随机熄灭
-                        grid[y][x] = TYPE_EMPTY;
-                    } else if (y > 0) {
-                        if (grid[y - 1][x] === TYPE_EMPTY) {
-                            swap(x, y, x, y - 1);
-                        } else if (grid[y - 1][x] === TYPE_OIL) {
-                            // 火遇油爆炸
-                            if (Math.random() < 0.3) {
-                                explode(x, y, 3);
-                                grid[y][x] = TYPE_EMPTY;
-                            }
-                        } else if (grid[y - 1][x] === TYPE_WATER) {
-                            // 火遇水产生蒸汽
-                            if (Math.random() < 0.4) {
-                                grid[y][x] = TYPE_STEAM;
-                                grid[y - 1][x] = TYPE_EMPTY;
-                                createSteam(x, y - 1);
-                            }
-                        } else {
-                            // 向上扩散
-                            if (y > 0 && grid[y - 1][x] === TYPE_EMPTY && Math.random() < 0.5) {
-                                swap(x, y, x, y - 1);
-                            } else if (y > 0 && x > 0 && grid[y - 1][x - 1] === TYPE_EMPTY && Math.random() < 0.25) {
-                                swap(x, y, x - 1, y - 1);
-                            } else if (y > 0 && x < width - 1 && grid[y - 1][x + 1] === TYPE_EMPTY && Math.random() < 0.25) {
-                                swap(x, y, x + 1, y - 1);
-                            }
-                        }
-                    }
-                }
-                else if (type === TYPE_OIL) {
-                    // 油的物理行为：浮在水上，缓慢流动
-                    if (y > 0 && grid[y - 1][x] === TYPE_WATER) {
-                        // 浮在水上
-                        swap(x, y, x, y - 1);
-                    } else if (y < height - 1) {
-                        if (grid[y + 1][x] === TYPE_EMPTY) {
-                            swap(x, y, x, y + 1);
-                        } else if (grid[y + 1][x] === TYPE_FIRE) {
-                            // 遇火爆炸
-                            if (Math.random() < 0.2) {
-                                explode(x, y, 4);
-                                grid[y][x] = TYPE_EMPTY;
-                            }
-                        } else {
-                            // 向两边缓慢流动
-                            const leftEmpty = x > 0 && grid[y][x - 1] === TYPE_EMPTY;
-                            const rightEmpty = x < width - 1 && grid[y][x + 1] === TYPE_EMPTY;
-                            
-                            if (leftEmpty && rightEmpty) {
-                                if (Math.random() < 0.3) {
-                                    swap(x, y, x - 1, y);
-                                } else if (Math.random() < 0.3) {
-                                    swap(x, y, x + 1, y);
-                                }
-                            } else if (leftEmpty && Math.random() < 0.3) {
-                                swap(x, y, x - 1, y);
-                            } else if (rightEmpty && Math.random() < 0.3) {
-                                swap(x, y, x + 1, y);
-                            }
-                        }
-                    }
-                }
-                else if (type === TYPE_STEAM) {
-                    // 蒸汽的物理行为：向上飘，逐渐消散
-                    if (Math.random() < 0.02) {
-                        // 随机消散
-                        grid[y][x] = TYPE_EMPTY;
-                    } else if (y > 0) {
-                        if (grid[y - 1][x] === TYPE_EMPTY) {
-                            swap(x, y, x, y - 1);
-                        } else if (x > 0 && grid[y - 1][x - 1] === TYPE_EMPTY && Math.random() < 0.3) {
-                            swap(x, y, x - 1, y - 1);
-                        } else if (x < width - 1 && grid[y - 1][x + 1] === TYPE_EMPTY && Math.random() < 0.3) {
-                            swap(x, y, x + 1, y - 1);
-                        } else if (x > 0 && grid[y][x - 1] === TYPE_EMPTY && Math.random() < 0.1) {
-                            swap(x, y, x - 1, y);
-                        } else if (x < width - 1 && grid[y][x + 1] === TYPE_EMPTY && Math.random() < 0.1) {
-                            swap(x, y, x + 1, y);
-                        }
-                    }
-                }
-            }
-
             particleCount = 0;
+            const changes = [];
+            
+            // 统计粒子数量
             for (let y = 0; y < height; y++) {
                 for (let x = 0; x < width; x++) {
                     if (grid[y][x] !== TYPE_EMPTY) {
@@ -1241,16 +1057,182 @@
                     }
                 }
             }
+            
+            // 从下往上，从左往右遍历
+            for (let y = height - 2; y >= 0; y--) {
+                for (let x = 0; x < width; x++) {
+                    const type = grid[y][x];
+                    if (type === TYPE_EMPTY || type === TYPE_FIRE) continue;
+
+                    let dx = 0;
+                    let dy = 1;
+
+                    if (type === TYPE_SAND) {
+                        if (y + 1 < height) {
+                            if (grid[y + 1][x] === TYPE_WATER) {
+                                // 沙子遇到水下沉
+                                changes.push({from: {x, y}, to: {x, y: y + 1}, type});
+                                continue;
+                            } else if (grid[y + 1][x] === TYPE_EMPTY) {
+                                // 沙子下落
+                                changes.push({from: {x, y}, to: {x, y: y + 1}, type});
+                                continue;
+                            } else if (x > 0 && grid[y + 1][x - 1] === TYPE_EMPTY) {
+                                // 向左下流动
+                                changes.push({from: {x, y}, to: {x: x - 1, y: y + 1}, type});
+                                continue;
+                            } else if (x < width - 1 && grid[y + 1][x + 1] === TYPE_EMPTY) {
+                                // 向右下流动
+                                changes.push({from: {x, y}, to: {x: x + 1, y: y + 1}, type});
+                                continue;
+                            }
+                        }
+                    } else if (type === TYPE_WATER) {
+                        if (y + 1 < height) {
+                            if (grid[y + 1][x] === TYPE_EMPTY) {
+                                // 水下落
+                                changes.push({from: {x, y}, to: {x, y: y + 1}, type});
+                                continue;
+                            } else if (x > 0 && grid[y + 1][x - 1] === TYPE_EMPTY) {
+                                // 向左下流动
+                                changes.push({from: {x, y}, to: {x: x - 1, y: y + 1}, type});
+                                continue;
+                            } else if (x < width - 1 && grid[y + 1][x + 1] === TYPE_EMPTY) {
+                                // 向右下流动
+                                changes.push({from: {x, y}, to: {x: x + 1, y: y + 1}, type});
+                                continue;
+                            } else if (x > 0 && grid[y][x - 1] === TYPE_EMPTY) {
+                                // 向左流动
+                                changes.push({from: {x, y}, to: {x: x - 1, y}, type});
+                                continue;
+                            } else if (x < width - 1 && grid[y][x + 1] === TYPE_EMPTY) {
+                                // 向右流动
+                                changes.push({from: {x, y}, to: {x: x + 1, y}, type});
+                                continue;
+                            }
+                        }
+                    } else if (type === TYPE_OIL) {
+                        if (y + 1 < height) {
+                            if (grid[y + 1][x] === TYPE_EMPTY) {
+                                // 油下落
+                                changes.push({from: {x, y}, to: {x, y: y + 1}, type});
+                                continue;
+                            } else if (grid[y + 1][x] === TYPE_WATER) {
+                                // 油浮在水上
+                                changes.push({from: {x, y}, to: {x, y: y + 1}, type, swap: true});
+                                continue;
+                            } else if (x > 0 && grid[y + 1][x - 1] === TYPE_EMPTY) {
+                                // 向左下流动
+                                changes.push({from: {x, y}, to: {x: x - 1, y: y + 1}, type});
+                                continue;
+                            } else if (x < width - 1 && grid[y + 1][x + 1] === TYPE_EMPTY) {
+                                // 向右下流动
+                                changes.push({from: {x, y}, to: {x: x + 1, y: y + 1}, type});
+                                continue;
+                            } else if (x > 0 && grid[y][x - 1] === TYPE_EMPTY) {
+                                // 向左流动
+                                changes.push({from: {x, y}, to: {x: x - 1, y}, type});
+                                continue;
+                            } else if (x < width - 1 && grid[y][x + 1] === TYPE_EMPTY) {
+                                // 向右流动
+                                changes.push({from: {x, y}, to: {x: x + 1, y}, type});
+                                continue;
+                            }
+                        }
+                    } else if (type === TYPE_STEAM) {
+                        // 蒸汽向上飘
+                        if (y > 0 && grid[y - 1][x] === TYPE_EMPTY) {
+                            changes.push({from: {x, y}, to: {x, y: y - 1}, type});
+                            continue;
+                        } else if (x > 0 && grid[y][x - 1] === TYPE_EMPTY) {
+                            changes.push({from: {x, y}, to: {x: x - 1, y}, type});
+                            continue;
+                        } else if (x < width - 1 && grid[y][x + 1] === TYPE_EMPTY) {
+                            changes.push({from: {x, y}, to: {x: x + 1, y}, type});
+                            continue;
+                        } else {
+                            // 蒸汽消失
+                            changes.push({from: {x, y}, to: null, type: TYPE_EMPTY});
+                            continue;
+                        }
+                    }
+                }
+            }
+            
+            // 从上往下处理火
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    if (grid[y][x] === TYPE_FIRE) {
+                        // 火随机消失
+                        if (Math.random() < 0.1) {
+                            changes.push({from: {x, y}, to: null, type: TYPE_EMPTY});
+                            continue;
+                        }
+                        
+                        // 蒸汽产生
+                        if (y > 0 && grid[y - 1][x] === TYPE_WATER) {
+                            changes.push({from: {x: x, y: y - 1}, to: null, type: TYPE_STEAM});
+                            changes.push({from: {x, y}, to: null, type: TYPE_EMPTY});
+                            continue;
+                        }
+                        
+                        // 火向上飘
+                        if (y > 0 && grid[y - 1][x] === TYPE_EMPTY) {
+                            changes.push({from: {x, y}, to: {x, y: y - 1}, type});
+                            continue;
+                        }
+                        
+                        // 火产生新火苗
+                        if (Math.random() < 0.3) {
+                            const dirs = [[-1, -1], [1, -1], [-1, 0], [1, 0]];
+                            const dir = dirs[Math.floor(Math.random() * dirs.length)];
+                            const nx = x + dir[0];
+                            const ny = y + dir[1];
+                            if (ny >= 0 && ny < height && nx >= 0 && nx < width && grid[ny][nx] === TYPE_EMPTY) {
+                                changes.push({from: {x: nx, y: ny}, to: {x: nx, y: ny}, type: TYPE_FIRE});
+                            }
+                        }
+                        
+                        // 油火爆炸
+                        if (y + 1 < height && grid[y + 1][x] === TYPE_OIL) {
+                            // 创建爆炸效果
+                            const explosionRadius = 5;
+                            for (let ey = -explosionRadius; ey <= explosionRadius; ey++) {
+                                for (let ex = -explosionRadius; ex <= explosionRadius; ex++) {
+                                    if (ex * ex + ey * ey <= explosionRadius * explosionRadius) {
+                                        const tx = x + ex;
+                                        const ty = y + ey;
+                                        if (ty >= 0 && ty < height && tx >= 0 && tx < width) {
+                                            if (Math.random() < 0.7) {
+                                                changes.push({from: {x: tx, y: ty}, to: null, type: TYPE_EMPTY});
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 应用变化
+            for (const change of changes) {
+                if (change.swap) {
+                    grid[change.to.y][change.to.x] = change.type;
+                    grid[change.from.x][change.from.y] = grid[change.from.x][change.from.y] === TYPE_WATER ? TYPE_EMPTY : TYPE_WATER;
+                } else if (change.to) {
+                    grid[change.to.y][change.to.x] = change.type;
+                    grid[change.from.y][change.from.x] = TYPE_EMPTY;
+                } else {
+                    grid[change.from.y][change.from.x] = change.type;
+                }
+            }
         }
 
         function draw() {
             drawGrid();
-        }
-
-        function gameLoop() {
-            update();
-            draw();
-
+            particleCounter.textContent = particleCount;
+            
             frameCount++;
             const currentTime = performance.now();
             if (currentTime - lastTime >= 1000) {
@@ -1258,28 +1240,23 @@
                 frameCount = 0;
                 lastTime = currentTime;
                 fpsCounter.textContent = fps;
-                particleCounter.textContent = particleCount;
             }
-
-            requestAnimationFrame(gameLoop);
+            
+            requestAnimationFrame(() => {
+                update();
+                draw();
+            });
         }
 
-        function paint(e) {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            const x = Math.floor((e.clientX - rect.left) * scaleX);
-            const y = Math.floor((e.clientY - rect.top) * scaleY);
-
-            for (let dy = -brushSize; dy <= brushSize; dy++) {
-                for (let dx = -brushSize; dx <= brushSize; dx++) {
-                    if (dx * dx + dy * dy <= brushSize * brushSize) {
-                        const nx = x + dx;
-                        const ny = y + dy;
-                        if (isValid(nx, ny)) {
-                            if (currentElement === TYPE_EMPTY) {
-                                grid[ny][nx] = TYPE_EMPTY;
-                            } else if (Math.random() < 0.7) {
+        function spawnElement(x, y) {
+            const radius = brushSize;
+            for (let dy = -radius; dy <= radius; dy++) {
+                for (let dx = -radius; dx <= radius; dx++) {
+                    if (dx * dx + dy * dy <= radius * radius) {
+                        const nx = Math.floor(x + dx);
+                        const ny = Math.floor(y + dy);
+                        if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                            if (grid[ny][nx] === TYPE_EMPTY) {
                                 grid[ny][nx] = currentElement;
                             }
                         }
@@ -1288,348 +1265,351 @@
             }
         }
 
-        function clearCanvas() {
-            for (let y = 0; y < height; y++) {
-                for (let x = 0; x < width; x++) {
-                    grid[y][x] = TYPE_EMPTY;
-                }
-            }
+        function setupCanvas() {
+            canvas.width = 800;
+            canvas.height = 500;
+            initGrid();
         }
 
-        function loadPreset(preset) {
-            clearCanvas();
+        function setupEventListeners() {
+            canvas.addEventListener('mousedown', (e) => {
+                isMouseDown = true;
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                spawnElement((e.clientX - rect.left) * scaleX, (e.clientY - rect.top) * scaleY);
+            });
 
-            if (preset === 'oil-fire') {
-                // 底层石油：x=150-650, y=380-480, 密度0.8
-                for (let x = 150; x < 650; x += 12) {
-                    for (let y = 380; y < 480; y += 12) {
-                        if (Math.random() < 0.8) {
-                            grid[y][x] = TYPE_OIL;
-                        }
+            canvas.addEventListener('mousemove', (e) => {
+                if (isMouseDown) {
+                    const rect = canvas.getBoundingClientRect();
+                    const scaleX = canvas.width / rect.width;
+                    const scaleY = canvas.height / rect.height;
+                    spawnElement((e.clientX - rect.left) * scaleX, (e.clientY - rect.top) * scaleY);
+                }
+            });
+
+            canvas.addEventListener('mouseup', () => {
+                isMouseDown = false;
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                isMouseDown = false;
+            });
+
+            // 触摸事件
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                isMouseDown = true;
+                const rect = canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                spawnElement((touch.clientX - rect.left) * scaleX, (touch.clientY - rect.top) * scaleY);
+            });
+
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (isMouseDown) {
+                    const rect = canvas.getBoundingClientRect();
+                    const touch = e.touches[0];
+                    const scaleX = canvas.width / rect.width;
+                    const scaleY = canvas.height / rect.height;
+                    spawnElement((touch.clientX - rect.left) * scaleX, (touch.clientY - rect.top) * scaleY);
+                }
+            });
+
+            canvas.addEventListener('touchend', () => {
+                isMouseDown = false;
+            });
+
+            // 元素选择按钮
+            document.querySelectorAll('.element-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.element-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const element = btn.dataset.element;
+                    switch(element) {
+                        case 'sand': currentElement = TYPE_SAND; break;
+                        case 'water': currentElement = TYPE_WATER; break;
+                        case 'fire': currentElement = TYPE_FIRE; break;
+                        case 'oil': currentElement = TYPE_OIL; break;
+                        case 'eraser': currentElement = TYPE_EMPTY; break;
+                    }
+                });
+            });
+
+            // 清除画布
+            document.getElementById('clear-btn').addEventListener('click', () => {
+                initGrid();
+            });
+
+            // 预设按钮
+            document.getElementById('preset-oil-fire').addEventListener('click', () => {
+                initGrid();
+                // 创建油在上，水在下的效果
+                for (let x = 300; x < 500; x++) {
+                    for (let y = 150; y < 250; y++) {
+                        grid[y][x] = TYPE_OIL;
                     }
                 }
+                for (let x = 300; x < 500; x++) {
+                    for (let y = 250; y < 350; y++) {
+                        grid[y][x] = TYPE_WATER;
+                    }
+                }
+            });
 
-                // 上方水流：x=100-700, y=280-380, 密度0.7
-                for (let x = 100; x < 700; x += 10) {
-                    for (let y = 280; y < 380; y += 10) {
+            document.getElementById('preset-water-fall').addEventListener('click', () => {
+                initGrid();
+                // 创建瀑布效果
+                for (let x = 390; x < 410; x++) {
+                    for (let y = 0; y < 150; y++) {
                         if (Math.random() < 0.7) {
                             grid[y][x] = TYPE_WATER;
                         }
                     }
                 }
-            } else if (preset === 'water-fall') {
-                for (let x = 0; x < 150; x++) {
-                    for (let y = 0; y < 150; y++) {
-                        if (Math.random() < 0.8) {
+                for (let x = 350; x < 450; x++) {
+                    for (let y = 150; y < 500; y++) {
+                        if (x >= 380 && x <= 420) {
+                            if (Math.random() < 0.5) {
+                                grid[y][x] = TYPE_WATER;
+                            }
+                        } else if ((x < 380 || x > 420) && Math.random() < 0.3) {
                             grid[y][x] = TYPE_WATER;
                         }
                     }
                 }
+            });
+        }
 
-                for (let x = 100; x < 700; x += 10) {
-                    const y = 250 + Math.floor(Math.random() * 10);
-                    if (isValid(x, y)) {
-                        grid[y][x] = TYPE_SAND;
+        // 矩阵雨效果
+        function initMatrixRain() {
+            const matrixCanvas = document.getElementById('matrix-canvas');
+            const ctx = matrixCanvas.getContext('2d');
+            
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+            
+            const chars = '0123456789ABCDEFHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%^&*';
+            const charArray = chars.split('');
+            const fontSize = 14;
+            const columns = matrixCanvas.width / fontSize;
+            const drops = [];
+            
+            for (let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+            
+            function drawMatrixRain() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                
+                ctx.fillStyle = '#0F0';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const char = charArray[Math.floor(Math.random() * charArray.length)];
+                    ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(drawMatrixRain, 50);
+            
+            window.addEventListener('resize', () => {
+                matrixCanvas.width = window.innerWidth;
+                matrixCanvas.height = window.innerHeight;
+            });
+        }
+
+        // 粒子效果
+        function initParticles() {
+            const particlesCanvas = document.getElementById('particles');
+            const ctx = particlesCanvas.getContext('2d');
+            
+            particlesCanvas.width = window.innerWidth;
+            particlesCanvas.height = window.innerHeight;
+            
+            const particles = [];
+            const particleCount = 50;
+            
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                
+                reset() {
+                    this.x = Math.random() * particlesCanvas.width;
+                    this.y = Math.random() * particlesCanvas.height;
+                    this.vx = (Math.random() - 0.5) * 2;
+                    this.vy = (Math.random() - 0.5) * 2;
+                    this.size = Math.random() * 2;
+                    this.opacity = Math.random() * 0.5 + 0.2;
+                }
+                
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    
+                    if (this.x < 0 || this.x > particlesCanvas.width || this.y < 0 || this.y > particlesCanvas.height) {
+                        this.reset();
                     }
                 }
+                
+                draw() {
+                    ctx.fillStyle = `rgba(0, 255, 0, ${this.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
             }
-        }
-
-        function initMatrix() {
-            const canvas = document.getElementById('matrix-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            // 黑客帝国数字雨 - 纯二进制 0 和 1
-            const characters = '01';
-            const fontSize = 18;
-            const columns = canvas.width / fontSize;
-            const drops = Array(Math.floor(columns)).fill(1);
-
-            function draw() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#0f0';
-                ctx.font = fontSize + 'px monospace';
-                drops.forEach((y, x) => {
-                    const text = characters[Math.floor(Math.random() * characters.length)];
-                    ctx.fillText(text, x * fontSize, y * fontSize);
-                    if (y * fontSize > canvas.height && Math.random() > 0.975) drops[x] = 0;
-                    drops[x]++;
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+                
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
                 });
+                
+                requestAnimationFrame(animate);
             }
-            setInterval(draw, 35);
+            
+            animate();
+            
+            window.addEventListener('resize', () => {
+                particlesCanvas.width = window.innerWidth;
+                particlesCanvas.height = window.innerHeight;
+            });
         }
 
-        function typewriterEffect() {
-            const texts = [
-                "欢迎进入测试工程师个人系统...",
-                "正在加载肖静的职业档案...",
-                "系统初始化完成..."
-            ];
-            let textIndex = 0;
-            let charIndex = 0;
-            let isDeleting = false;
-            const typewriterElement = document.getElementById('typewriter');
-
+        // 打字机效果
+        function initTyping() {
+            const text = "致力于打造高质量软件产品";
+            const typingText = document.getElementById('typing-text');
+            let index = 0;
+            
             function type() {
-                const currentText = texts[textIndex];
-
-                if (isDeleting) {
-                    typewriterElement.textContent = currentText.substring(0, charIndex - 1);
-                    charIndex--;
-                } else {
-                    typewriterElement.textContent = currentText.substring(0, charIndex + 1);
-                    charIndex++;
-                }
-
-                if (!isDeleting && charIndex === currentText.length) {
-                    isDeleting = true;
-                    setTimeout(type, 2000);
-                } else if (isDeleting && charIndex === 0) {
-                    isDeleting = false;
-                    textIndex = (textIndex + 1) % texts.length;
-                    setTimeout(type, 500);
-                } else {
-                    setTimeout(type, isDeleting ? 50 : 100);
-                }
-
-                if (charIndex === currentText.length - 1 && !isDeleting) {
-                    document.getElementById('profile-card').classList.add('show');
+                if (index < text.length) {
+                    typingText.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(type, 150);
                 }
             }
+            
             type();
         }
 
-        // Glitch效果函数
-        function triggerGlitchEffect() {
-            const overlay = document.getElementById('glitch-overlay');
-            const glitchText = document.getElementById('glitch-text');
-            
-            // 添加Glitch激活类
-            document.body.classList.add('glitch-active');
-            overlay.classList.add('active');
-            glitchText.classList.add('active');
-            
-            // 播放Glitch音效（可选，这里用视觉反馈代替）
-            
-            // 随机闪烁文字
-            const messages = [
-                '⚠️ SYSTEM BREACH DETECTED ⚠️',
-                '⚠️ 入侵检测 ⚠️',
-                '⚠️ ACCESSING MAINFRAME... ⚠️',
-                '⚠️ 警告：系统入侵中 ⚠️'
-            ];
-            
-            let glitchCount = 0;
-            const maxGlitches = 8;
-            
-            // 随机切换警告文字
-            const textInterval = setInterval(() => {
-                glitchText.textContent = messages[Math.floor(Math.random() * messages.length)];
-                glitchCount++;
-                
-                if (glitchCount >= maxGlitches) {
-                    clearInterval(textInterval);
-                    // 最终显示导航菜单
-                    setTimeout(() => {
-                        document.body.classList.remove('glitch-active');
-                        overlay.classList.remove('active');
-                        glitchText.classList.remove('active');
-                        showNavMenu();
-                        // 恢复按钮状态
-                        hackBtn.disabled = false;
-                        hackBtn.style.opacity = '1';
-                        hackBtn.style.cursor = 'pointer';
-                    }, 300);
-                }
-            }, 150);
-            
-            // 随机抖动整个页面
-            const shakeInterval = setInterval(() => {
-                const shakeX = (Math.random() - 0.5) * 6;
-                const shakeY = (Math.random() - 0.5) * 6;
-                document.body.style.transform = `translate(${shakeX}px, ${shakeY}px)`;
-                
-                if (glitchCount >= maxGlitches) {
-                    clearInterval(shakeInterval);
-                    document.body.style.transform = '';
-                }
-            }, 80); // 抖动间隔更慢
-        }
-
-        // 绑定导航菜单事件
-        document.getElementById('hack-btn').onclick = function() {
-            triggerGlitchEffect();
-        };
-
-        // 导航菜单功能
-        function showNavMenu() {
-            document.getElementById('nav-menu').classList.add('show');
-            document.getElementById('overlay').classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function hideNavMenu() {
-            document.getElementById('nav-menu').classList.remove('show');
-            document.getElementById('overlay').classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
-        document.getElementById('close-nav').onclick = function() {
-            hideNavMenu();
-        };
-
-        document.getElementById('overlay').onclick = function() {
-            hideNavMenu();
-        };
-
-        // ESC键关闭导航菜单
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                hideNavMenu();
-            }
-        });
-
-        function initParticles() {
-            const canvas = document.getElementById('particles');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const particles = [];
-            const particleCount = 50;
-
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 2 + 1,
-                    speedX: (Math.random() - 0.5) * 0.5,
-                    speedY: (Math.random() - 0.5) * 0.5,
-                    opacity: Math.random() * 0.5 + 0.2
-                });
-            }
-
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#0f0';
-
-                particles.forEach(particle => {
-                    ctx.globalAlpha = particle.opacity;
-                    ctx.beginPath();
-                    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    particle.x += particle.speedX;
-                    particle.y += particle.speedY;
-
-                    if (particle.x < 0) particle.x = canvas.width;
-                    if (particle.x > canvas.width) particle.x = 0;
-                    if (particle.y < 0) particle.y = canvas.height;
-                    if (particle.y > canvas.height) particle.y = 0;
-                });
-            }
-
-            setInterval(draw, 50);
-        }
-
+        // 统计数字动画
         function animateNumbers() {
             const numbers = document.querySelectorAll('.stat-number');
+            
             numbers.forEach(num => {
                 const target = parseInt(num.dataset.target);
-                const duration = 2000;
-                const step = target / (duration / 16);
+                const suffix = num.dataset.suffix || '%';
                 let current = 0;
-
+                const increment = target / 100;
+                const duration = 2000;
+                const stepTime = duration / 100;
+                
                 const timer = setInterval(() => {
-                    current += step;
+                    current += increment;
                     if (current >= target) {
-                        num.textContent = target + '+';
+                        current = target;
                         clearInterval(timer);
-                    } else {
-                        num.textContent = Math.floor(current);
                     }
-                }, 16);
+                    num.textContent = Math.floor(current) + suffix;
+                }, stepTime);
             });
         }
 
-        canvas.addEventListener('mousedown', (e) => {
-            isMouseDown = true;
-            paint(e);
-        });
+        // 显示个人档案
+        function showProfile() {
+            const profileCard = document.getElementById('profile-card');
+            profileCard.classList.add('show');
+            animateNumbers();
+        }
 
-        canvas.addEventListener('mousemove', (e) => {
-            if (isMouseDown) paint(e);
-        });
+        // 隐藏个人档案
+        function hideProfile() {
+            const profileCard = document.getElementById('profile-card');
+            profileCard.classList.remove('show');
+        }
 
-        canvas.addEventListener('mouseup', () => {
-            isMouseDown = false;
-        });
-
-        canvas.addEventListener('mouseleave', () => {
-            isMouseDown = false;
-        });
-
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            isMouseDown = true;
-            const touch = e.touches[0];
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            const x = Math.floor((touch.clientX - rect.left) * scaleX);
-            const y = Math.floor((touch.clientY - rect.top) * scaleY);
-            paint({ clientX: touch.clientX, clientY: touch.clientY });
-        });
-
-        canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (isMouseDown) {
-                const touch = e.touches[0];
-                paint({ clientX: touch.clientX, clientY: touch.clientY });
+        // 切换档案显示
+        function toggleProfile() {
+            const profileCard = document.getElementById('profile-card');
+            const hackBtn = document.getElementById('hack-btn');
+            
+            if (profileCard.classList.contains('show')) {
+                hideProfile();
+                hackBtn.textContent = '👁️ 查看档案';
+            } else {
+                showProfile();
+                hackBtn.textContent = '🔒 隐藏档案';
             }
-        });
+        }
 
-        canvas.addEventListener('touchend', () => {
-            isMouseDown = false;
-        });
-
-        document.querySelectorAll('.element-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.element-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const element = btn.dataset.element;
-                switch (element) {
-                    case 'sand': currentElement = TYPE_SAND; break;
-                    case 'water': currentElement = TYPE_WATER; break;
-                    case 'fire': currentElement = TYPE_FIRE; break;
-                    case 'oil': currentElement = TYPE_OIL; break;
-                    case 'steam': currentElement = TYPE_STEAM; break;
-                    case 'eraser': currentElement = TYPE_EMPTY; break;
-                }
-            });
-        });
-
-        document.getElementById('clear-btn').addEventListener('click', clearCanvas);
-        document.getElementById('preset-oil-fire').addEventListener('click', () => loadPreset('oil-fire'));
-        document.getElementById('preset-water-fall').addEventListener('click', () => loadPreset('water-fall'));
-
-        window.addEventListener('load', () => {
-            initMatrix();
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initMatrixRain();
             initParticles();
-            typewriterEffect();
-            setTimeout(animateNumbers, 2000);
-            initGrid();
-            gameLoop();
-        });
+            initTyping();
+            setupCanvas();
+            setupEventListeners();
+            draw();
+            
+            // 导航菜单
+            const navMenu = document.getElementById('nav-menu');
+            const overlay = document.getElementById('overlay');
+            
+            // 点击导航项显示档案
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (!item.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        hideNavMenu();
+                        
+                        // 添加故障效果
+                        document.body.classList.add('glitch-active');
+                        const glitchText = document.querySelector('.glitch-text');
+                        glitchText.classList.add('active');
+                        
+                        setTimeout(() => {
+                            document.body.classList.remove('glitch-active');
+                            glitchText.classList.remove('active');
+                            
+                            // 延迟导航
+                            setTimeout(() => {
+                                navigateTo(item.getAttribute('href'));
+                            }, 500);
+                        }, 1500);
+                    }
+                });
+            });
 
-        window.addEventListener('resize', () => {
-            const matrixCanvas = document.getElementById('matrix-canvas');
-            matrixCanvas.width = window.innerWidth;
-            matrixCanvas.height = window.innerHeight;
+            // 双击导航菜单打开
+            document.addEventListener('dblclick', () => {
+                navMenu.classList.add('show');
+                overlay.classList.add('show');
+            });
+
+            // 点击遮罩关闭
+            overlay.addEventListener('click', () => {
+                hideNavMenu();
+                overlay.classList.remove('show');
+            });
         });
     </script>
 </body>
